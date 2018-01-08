@@ -194,49 +194,49 @@ class TestMultiIndex(Base):
 
         # level changing [w/o mutation]
         ind2 = self.index.set_levels(new_levels)
-        assert_matching(ind2.levels, new_levels)
-        assert_matching(self.index.levels, levels)
+        tm.assert_index_equal(ind2.levels, new_levels)
+        tm.assert_index_equal(self.index.levels, levels)
 
         # level changing [w/ mutation]
         ind2 = self.index.copy()
         inplace_return = ind2.set_levels(new_levels, inplace=True)
         assert inplace_return is None
-        assert_matching(ind2.levels, new_levels)
+        tm.assert_index_equal(ind2.levels, new_levels)
 
         # level changing specific level [w/o mutation]
         ind2 = self.index.set_levels(new_levels[0], level=0)
-        assert_matching(ind2.levels, [new_levels[0], levels[1]])
-        assert_matching(self.index.levels, levels)
+        tm.assert_index_equal(ind2.levels, [new_levels[0], levels[1]])
+        tm.assert_index_equal(self.index.levels, levels)
 
         ind2 = self.index.set_levels(new_levels[1], level=1)
-        assert_matching(ind2.levels, [levels[0], new_levels[1]])
-        assert_matching(self.index.levels, levels)
+        tm.assert_index_equal(ind2.levels, [levels[0], new_levels[1]])
+        tm.assert_index_equal(self.index.levels, levels)
 
         # level changing multiple levels [w/o mutation]
         ind2 = self.index.set_levels(new_levels, level=[0, 1])
-        assert_matching(ind2.levels, new_levels)
-        assert_matching(self.index.levels, levels)
+        tm.assert_index_equal(ind2.levels, new_levels)
+        tm.assert_index_equal(self.index.levels, levels)
 
         # level changing specific level [w/ mutation]
         ind2 = self.index.copy()
         inplace_return = ind2.set_levels(new_levels[0], level=0, inplace=True)
         assert inplace_return is None
-        assert_matching(ind2.levels, [new_levels[0], levels[1]])
-        assert_matching(self.index.levels, levels)
+        tm.assert_index_equal(ind2.levels, [new_levels[0], levels[1]])
+        tm.assert_index_equal(self.index.levels, levels)
 
         ind2 = self.index.copy()
         inplace_return = ind2.set_levels(new_levels[1], level=1, inplace=True)
         assert inplace_return is None
-        assert_matching(ind2.levels, [levels[0], new_levels[1]])
-        assert_matching(self.index.levels, levels)
+        tm.assert_index_equal(ind2.levels, [levels[0], new_levels[1]])
+        tm.assert_index_equal(self.index.levels, levels)
 
         # level changing multiple levels [w/ mutation]
         ind2 = self.index.copy()
         inplace_return = ind2.set_levels(new_levels, level=[0, 1],
                                          inplace=True)
         assert inplace_return is None
-        assert_matching(ind2.levels, new_levels)
-        assert_matching(self.index.levels, levels)
+        tm.assert_index_equal(ind2.levels, new_levels)
+        tm.assert_index_equal(self.index.levels, levels)
 
         # illegal level changing should not change levels
         # GH 13754
@@ -244,24 +244,20 @@ class TestMultiIndex(Base):
         for inplace in [True, False]:
             with tm.assert_raises_regex(ValueError, "^On"):
                 self.index.set_levels(['c'], level=0, inplace=inplace)
-            assert_matching(self.index.levels, original_index.levels,
-                            check_dtype=True)
+            tm.assert_index_equal(self.index.levels, original_index.levels)
 
             with tm.assert_raises_regex(ValueError, "^On"):
                 self.index.set_labels([0, 1, 2, 3, 4, 5], level=0,
                                       inplace=inplace)
-            assert_matching(self.index.labels, original_index.labels,
-                            check_dtype=True)
+            tm.assert_index_equal(self.index.labels, original_index.labels)
 
             with tm.assert_raises_regex(TypeError, "^Levels"):
                 self.index.set_levels('c', level=0, inplace=inplace)
-            assert_matching(self.index.levels, original_index.levels,
-                            check_dtype=True)
+            tm.assert_index_equal(self.index.levels, original_index.levels)
 
             with tm.assert_raises_regex(TypeError, "^Labels"):
                 self.index.set_labels(1, level=0, inplace=inplace)
-            assert_matching(self.index.labels, original_index.labels,
-                            check_dtype=True)
+            tm.assert_index_equal(self.index.labels, original_index.labels)
 
     def test_set_labels(self):
         # side note - you probably wouldn't want to use levels and labels
@@ -283,49 +279,49 @@ class TestMultiIndex(Base):
 
         # label changing [w/o mutation]
         ind2 = self.index.set_labels(new_labels)
-        assert_matching(ind2.labels, new_labels)
-        assert_matching(self.index.labels, labels)
+        tm.assert_index_equal(ind2.labels, new_labels)
+        tm.assert_index_equal(self.index.labels, labels)
 
         # label changing [w/ mutation]
         ind2 = self.index.copy()
         inplace_return = ind2.set_labels(new_labels, inplace=True)
         assert inplace_return is None
-        assert_matching(ind2.labels, new_labels)
+        tm.assert_index_equal(ind2.labels, new_labels)
 
         # label changing specific level [w/o mutation]
         ind2 = self.index.set_labels(new_labels[0], level=0)
-        assert_matching(ind2.labels, [new_labels[0], labels[1]])
-        assert_matching(self.index.labels, labels)
+        tm.assert_index_equal(ind2.labels, [new_labels[0], labels[1]])
+        tm.assert_index_equal(self.index.labels, labels)
 
         ind2 = self.index.set_labels(new_labels[1], level=1)
-        assert_matching(ind2.labels, [labels[0], new_labels[1]])
-        assert_matching(self.index.labels, labels)
+        tm.assert_index_equal(ind2.labels, [labels[0], new_labels[1]])
+        tm.assert_index_equal(self.index.labels, labels)
 
         # label changing multiple levels [w/o mutation]
         ind2 = self.index.set_labels(new_labels, level=[0, 1])
-        assert_matching(ind2.labels, new_labels)
-        assert_matching(self.index.labels, labels)
+        tm.assert_index_equal(ind2.labels, new_labels)
+        tm.assert_index_equal(self.index.labels, labels)
 
         # label changing specific level [w/ mutation]
         ind2 = self.index.copy()
         inplace_return = ind2.set_labels(new_labels[0], level=0, inplace=True)
         assert inplace_return is None
-        assert_matching(ind2.labels, [new_labels[0], labels[1]])
-        assert_matching(self.index.labels, labels)
+        tm.assert_index_equal(ind2.labels, [new_labels[0], labels[1]])
+        tm.assert_index_equal(self.index.labels, labels)
 
         ind2 = self.index.copy()
         inplace_return = ind2.set_labels(new_labels[1], level=1, inplace=True)
         assert inplace_return is None
-        assert_matching(ind2.labels, [labels[0], new_labels[1]])
-        assert_matching(self.index.labels, labels)
+        tm.assert_index_equal(ind2.labels, [labels[0], new_labels[1]])
+        tm.assert_index_equal(self.index.labels, labels)
 
         # label changing multiple levels [w/ mutation]
         ind2 = self.index.copy()
         inplace_return = ind2.set_labels(new_labels, level=[0, 1],
                                          inplace=True)
         assert inplace_return is None
-        assert_matching(ind2.labels, new_labels)
-        assert_matching(self.index.labels, labels)
+        tm.assert_index_equal(ind2.labels, new_labels)
+        tm.assert_index_equal(self.index.labels, labels)
 
         # label changing for levels of different magnitude of categories
         ind = pd.MultiIndex.from_tuples([(0, i) for i in range(130)])
